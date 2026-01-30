@@ -89,3 +89,101 @@
 .animate-marquee {
   animation: marquee 20s linear infinite;
 }
+
+/* Products Dropdown Styles - Smooth Cloth Falling Effect */
+@keyframes clothFall {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top center;
+  }
+}
+
+@keyframes contentReveal {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.products-dropdown {
+  animation: clothFall 0.4s ease-out forwards;
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.products-dropdown>div {
+  animation: contentReveal 0.3s ease-out 0.1s forwards;
+  opacity: 0;
+}
+
+/* Rotating SVG icons in dropdown - Only on hover */
+@keyframes rotateIcon {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Individual SVG shapes - no rotation by default */
+.product-icon-shape {
+  animation: none;
+  transition: transform 0.3s ease;
+}
+
+/* On hover: start rotating fast, then slow down but never stop */
+.product-icon-shape:hover {
+  animation: rotateIcon 1s ease-out infinite;
+}
+
+.atlas-web-mono {
+  font-family: 'Akkurat', ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.atlas-web-sm {
+  font-family: 'Akkurat', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.75rem;
+}
+
+.product-section-title {
+  font-family: 'Akkurat', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.product-section-heading {
+  font-family: 'Akkurat', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.product-link {
+  font-family: 'Akkurat', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.875rem;
+  color: #1f2937;
+  transition: color 0.15s;
+}
+
+.product-link:hover {
+  color: #6b7280;
+}
