@@ -2,7 +2,7 @@ export default function Hero() {
     return (
         <section className="w-full flex flex-col items-center pt-12 pb-8 px-6">
             {/* Main Headline */}
-            <h1 className="hero-heading font-bold text-3xl md:text-4xl lg:text-[2.75rem] leading-tight text-center text-gray-900 max-w-3xl">
+            <h1 className="hero-heading font-bold text-3xl md:text-4xl lg:text-[2.5rem] leading-tight text-center text-gray-900 max-w-3xl">
                 The single platform to iterate,
                 <br />
                 evaluate, deploy, and monitor AI agents

@@ -11,6 +11,9 @@ const App = () => {
   // Reference to the container and canvas DOM nodes
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
+  const uiContentRef = useRef(null);
+  const navbarRef = useRef(null);
+  const heroRef = useRef(null);
 
   // State to store preloaded image frames
   const [images, setImages] = useState([]);
@@ -99,7 +102,7 @@ const App = () => {
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
-        end: "bottom bottom",
+        end: "+=5000",
         scrub: 0.5,
         pin: true,
         onUpdate: render,
@@ -113,6 +116,43 @@ const App = () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, [images]);
+
+  // 3. UI Content Scroll Animation
+  useEffect(() => {
+    const navbar = navbarRef.current;
+    const hero = heroRef.current;
+    if (!navbar || !hero) return;
+
+    // Hero: shrink and fade FIRST (starts immediately when scrolling begins)
+    const heroAnimation = gsap.to(hero, {
+      scale: 0.85,
+      opacity: 0,
+      ease: "power2.inOut",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "+=1000",
+        scrub: 1,
+      },
+    });
+
+    // Navbar: fade out with DELAY (starts after 500px of scrolling)
+    const navbarAnimation = gsap.to(navbar, {
+      opacity: 0,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top+=500 top",
+        end: "+=600",
+        scrub: 0.8,
+      },
+    });
+
+    return () => {
+      if (heroAnimation) heroAnimation.kill();
+      if (navbarAnimation) navbarAnimation.kill();
+    };
+  }, []);
 
   return (
     <div ref={containerRef} style={{ height: '100vh', position: 'relative' }}>
@@ -129,6 +169,7 @@ const App = () => {
       />
 
       <div
+        ref={uiContentRef}
         className="ui-content"
         style={{
           position: 'relative',
@@ -137,8 +178,12 @@ const App = () => {
           pointerEvents: 'auto'
         }}
       >
-        <Navbar />
-        <Hero />
+        <div ref={navbarRef}>
+          <Navbar />
+        </div>
+        <div ref={heroRef} className="hero-wrapper">
+          <Hero />
+        </div>
       </div>
     </div>
   );

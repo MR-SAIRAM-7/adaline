@@ -63,3 +63,14 @@
 .btn-primary:hover {
   background-color: #234012;
 }
+
+/* UI Content scroll animation styles */
+.ui-content {
+  transform-origin: center top;
+  will-change: transform, opacity;
+}
+
+.hero-wrapper {
+  transform-origin: center top;
+  will-change: transform, opacity;
+}
