@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
+// import Navbar from "./components/Navbar";
+// import Hero from "./components/Hero";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +12,6 @@ const PREFIX = "graded4K100gm5010803";
 function App() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [loadedCount, setLoadedCount] = useState(0);
   const imagesRef = useRef([]);
   const frameRef = useRef({ current: 0 });
@@ -46,7 +45,6 @@ function App() {
 
       imagesRef.current = imageObjects;
       await Promise.all(promises);
-      setIsLoading(false);
     };
 
     loadImages();
@@ -54,7 +52,6 @@ function App() {
 
   //  Setup ScrollTrigger and Canvas Rendering
   useEffect(() => {
-    if (isLoading) return;
     if (!canvasRef.current || !containerRef.current) return;
 
     const canvas = canvasRef.current;
@@ -122,14 +119,8 @@ function App() {
       uiFade.kill();
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
-  }, [isLoading]);
+  }, []);
 
-  if (isLoading) {
-    const progress = Math.round((loadedCount / TOTAL_FRAMES) * 100);
-    return (
-      <></>
-    );
-  }
 
   return (
     <div ref={containerRef} style={{ height: '500vh', position: 'relative' }}>
@@ -145,19 +136,6 @@ function App() {
           objectFit: 'cover'
         }}
       />
-
-      <div className="ui-content fixed top-0 left-0 w-full h-full z-10 pointer-events-none">
-        <div className="w-full h-full pointer-events-auto">
-          <Navbar />
-          <div className="flex flex-col h-full pointer-events-none">
-            {/* Hero should generally allow text selection but let's prevent blocks 
-                     if it fades out. Content can be interactive if needed. 
-                     For now, let's make it interactive until it fades.
-                 */}
-            <Hero />
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
