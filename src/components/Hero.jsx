@@ -1,8 +1,6 @@
 import React from 'react';
 
-// --- LOGO COMPONENTS ---
 
-// 1. The original Salesforce Logo
 const LogoSalesforce = () => (
     <div className="flex items-center gap-2 text-black">
         <svg xmlns="http://www.w3.org/2000/svg" width="104" height="26" fill="currentColor">
@@ -11,7 +9,6 @@ const LogoSalesforce = () => (
     </div>
 );
 
-// 2. The 122x25 Logo (Microsoft-style)
 const LogoTwo = () => (
     <div className="flex items-center gap-2 text-black">
         <svg xmlns="http://www.w3.org/2000/svg" width="122" height="25" fill="currentColor">
@@ -20,7 +17,7 @@ const LogoTwo = () => (
     </div>
 );
 
-// 3. The 125x42 Logo (Google-style)
+
 const LogoThree = () => (
     <div className="flex items-center gap-2 text-black">
         <svg xmlns="http://www.w3.org/2000/svg" width="125" height="42" fill="currentColor">
@@ -31,11 +28,10 @@ const LogoThree = () => (
 
 
 export default function Hero() {
-    // We create a list of the logo components
+    
     const baseLogos = [LogoSalesforce, LogoTwo, LogoThree];
 
-    // We repeat the array a few times to ensure the list is long enough 
-    // to scroll smoothly across the screen width without gaps.
+    
     const logos = [...baseLogos, ...baseLogos, ...baseLogos];
 
     return (
@@ -59,16 +55,13 @@ export default function Hero() {
                 evaluate, deploy, and monitor AI agents
             </h1>
 
-            {/* Trusted By Section */}
-            {/* max-w-4xl is used here as requested to decrease width */}
+           
             <div className="mt-12 flex flex-col items-center w-full max-w-4xl overflow-hidden">
                 <span className="text-xs tracking-[0.2em] text-gray-500 mb-6">
                     TRUSTED BY
                 </span>
 
-                {/* 1. mask-image adds a fade effect on left/right edges 
-                  2. We render TWO groups of logos. One follows the other to create the infinite loop.
-                */}
+               
                 <div 
                   className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]"
                 >

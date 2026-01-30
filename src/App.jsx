@@ -4,31 +4,28 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 
-// Register the ScrollTrigger plugin
+
 gsap.registerPlugin(ScrollTrigger);
 
 const App = () => {
-  // Reference to the container and canvas DOM nodes
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const uiContentRef = useRef(null);
   const navbarRef = useRef(null);
   const heroRef = useRef(null);
 
-  // State to store preloaded image frames
+  
   const [images, setImages] = useState([]);
 
-  // Total number of frames in the sequence
+  
   const totalFrames = 281;
 
-  // 1. Preload Images
-  // This useEffect runs once on load to create image elements for all frames
+  
   useEffect(() => {
     const loadedImages = [];
 
     for (let i = 1; i <= totalFrames; i++) {
       const img = new Image();
-      // Zero-pad the frame number to match the filename format (001, 002, etc.)
       const paddedNumber = String(i).padStart(3, '0');
       img.src = `/sequence/graded4K100gm5010803${paddedNumber}.jpg`;
       loadedImages.push(img);
@@ -37,10 +34,9 @@ const App = () => {
     setImages(loadedImages);
   }, []);
 
-  // 2. Setup Canvas and Animation
-  // This is the primary logic that links scroll positions to frame changes
+
   useEffect(() => {
-    // Ensure images are loaded before running animation logic
+   
     if (images.length === 0) return;
 
     const canvas = canvasRef.current;
@@ -48,7 +44,7 @@ const App = () => {
 
     const context = canvas.getContext("2d");
 
-    // Handle window resize for responsive canvas
+    
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -57,7 +53,7 @@ const App = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // Object to track the current frame index (starts at 0)
+    
     const frameState = { frame: 0 };
 
     // Function to render the image corresponding to the current frame index
@@ -66,7 +62,6 @@ const App = () => {
       const currentImage = images[frameState.frame];
 
       if (currentImage && currentImage.complete && currentImage.naturalWidth > 0) {
-        // Calculate aspect ratio to cover the canvas
         const imgAspect = currentImage.naturalWidth / currentImage.naturalHeight;
         const canvasAspect = canvas.width / canvas.height;
 
@@ -117,13 +112,12 @@ const App = () => {
     };
   }, [images]);
 
-  // 3. UI Content Scroll Animation
+  
   useEffect(() => {
     const navbar = navbarRef.current;
     const hero = heroRef.current;
     if (!navbar || !hero) return;
 
-    // Hero: shrink and fade FIRST (starts immediately when scrolling begins)
     const heroAnimation = gsap.to(hero, {
       scale: 0.85,
       opacity: 0,
