@@ -43,13 +43,13 @@ export default function Navbar() {
 
                 {/* Right - CTA Buttons */}
                 <div className="flex items-center gap-4">
-                    <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full text-xs font-medium tracking-wider text-gray-800 hover:bg-gray-100 transition-colors">
+                    <button className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-full text-xs font-medium tracking-wider text-gray-800 hover:bg-gray-100 transition-colors">
                         WATCH DEMO
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M8 5v14l11-7z" />
                         </svg>
                     </button>
-                    <button className="px-5 py-2 bg-[#2D5016] text-white rounded-full text-xs font-medium tracking-wider hover:bg-[#234012] transition-colors">
+                    <button className="px-5 py-3 bg-[#2D5016] text-white rounded-full text-xs font-medium tracking-wider hover:bg-[#234012] transition-colors">
                         START FOR FREE
                     </button>
                 </div>
