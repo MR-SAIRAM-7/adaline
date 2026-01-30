@@ -1,9 +1,65 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Akkurat Font */
+@font-face {
+  font-family: 'Akkurat';
+  src: local('Akkurat'),
+    url('/fonts/Akkurat.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Hero section typography */
+.hero-heading {
+  font-family: 'Akkurat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Custom navbar and hero styles */
+.navbar-link {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: #1f2937;
+  transition: color 0.2s;
+}
+
+.navbar-link:hover {
+  color: #4b5563;
+}
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #1f2937;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: #f3f4f6;
+}
+
+.btn-primary {
+  padding: 0.5rem 1.25rem;
+  background-color: #2D5016;
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #234012;
 }

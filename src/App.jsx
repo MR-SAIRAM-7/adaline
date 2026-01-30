@@ -1,143 +1,147 @@
-import { useRef, useEffect, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import Navbar from "./components/Navbar";
-// import Hero from "./components/Hero";
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 
+// Register the ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-const TOTAL_FRAMES = 281;
-const PREFIX = "graded4K100gm5010803";
-
-function App() {
-  const canvasRef = useRef(null);
+const App = () => {
+  // Reference to the container and canvas DOM nodes
   const containerRef = useRef(null);
-  const [loadedCount, setLoadedCount] = useState(0);
-  const imagesRef = useRef([]);
-  const frameRef = useRef({ current: 0 });
+  const canvasRef = useRef(null);
 
-  // preload Images
+  // State to store preloaded image frames
+  const [images, setImages] = useState([]);
+
+  // Total number of frames in the sequence
+  const totalFrames = 281;
+
+  // 1. Preload Images
+  // This useEffect runs once on load to create image elements for all frames
   useEffect(() => {
-    const loadImages = async () => {
-      const promises = [];
-      const imageObjects = [];
+    const loadedImages = [];
 
-      for (let i = 1; i <= TOTAL_FRAMES; i++) {
-        const img = new Image();
-        const paddedIndex = String(i).padStart(3, "0");
-        const src = `/sequence/${PREFIX}${paddedIndex}.jpg`;
+    for (let i = 1; i <= totalFrames; i++) {
+      const img = new Image();
+      // Zero-pad the frame number to match the filename format (001, 002, etc.)
+      const paddedNumber = String(i).padStart(3, '0');
+      img.src = `/sequence/graded4K100gm5010803${paddedNumber}.jpg`;
+      loadedImages.push(img);
+    }
 
-        const promise = new Promise((resolve) => {
-          img.onload = () => {
-            setLoadedCount((prev) => prev + 1);
-            resolve(img);
-          };
-          img.onerror = (e) => {
-            console.error(`Failed to load image: ${src}`, e);
-            resolve(null);
-          };
-        });
-
-        img.src = src;
-        imageObjects.push(img);
-        promises.push(promise);
-      }
-
-      imagesRef.current = imageObjects;
-      await Promise.all(promises);
-    };
-
-    loadImages();
+    setImages(loadedImages);
   }, []);
 
-  //  Setup ScrollTrigger and Canvas Rendering
+  // 2. Setup Canvas and Animation
+  // This is the primary logic that links scroll positions to frame changes
   useEffect(() => {
-    if (!canvasRef.current || !containerRef.current) return;
+    // Ensure images are loaded before running animation logic
+    if (images.length === 0) return;
 
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    const images = imagesRef.current;
+    if (!canvas) return;
 
-    // Sizing function for object-fit: cover
-    const resizeCanvas = () => {
+    const context = canvas.getContext("2d");
+
+    // Handle window resize for responsive canvas
+    const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      render();
     };
 
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    // Object to track the current frame index (starts at 0)
+    const frameState = { frame: 0 };
+
+    // Function to render the image corresponding to the current frame index
     const render = () => {
-      const frameIndex = Math.round(frameRef.current.current);
-      const img = images[frameIndex];
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      const currentImage = images[frameState.frame];
 
-      if (img && img.complete && img.naturalWidth > 0) {
-        const w = canvas.width;
-        const h = canvas.height;
-        const imgW = img.width;
-        const imgH = img.height;
+      if (currentImage && currentImage.complete && currentImage.naturalWidth > 0) {
+        // Calculate aspect ratio to cover the canvas
+        const imgAspect = currentImage.naturalWidth / currentImage.naturalHeight;
+        const canvasAspect = canvas.width / canvas.height;
 
-        const scale = Math.max(w / imgW, h / imgH);
-        const x = (w - (imgW * scale)) / 2;
-        const y = (h - (imgH * scale)) / 2;
+        let drawWidth, drawHeight, drawX, drawY;
 
-        context.clearRect(0, 0, w, h);
-        context.drawImage(img, x, y, imgW * scale, imgH * scale);
+        if (canvasAspect > imgAspect) {
+          drawWidth = canvas.width;
+          drawHeight = canvas.width / imgAspect;
+          drawX = 0;
+          drawY = (canvas.height - drawHeight) / 2;
+        } else {
+          drawHeight = canvas.height;
+          drawWidth = canvas.height * imgAspect;
+          drawX = (canvas.width - drawWidth) / 2;
+          drawY = 0;
+        }
+
+        context.drawImage(currentImage, drawX, drawY, drawWidth, drawHeight);
       }
     };
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    // Wait for first image to load before initial render
+    if (images[0]) {
+      images[0].onload = render;
+      if (images[0].complete) render();
+    }
 
-    // GSAP Animation
-    const animation = gsap.to(frameRef.current, {
-      current: TOTAL_FRAMES - 1,
-      snap: "current",
+    // GSAP Animation - animate frame index based on scroll
+    const animation = gsap.to(frameState, {
+      frame: totalFrames - 1,
+      snap: "frame",
       ease: "none",
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
         scrub: 0.5,
+        pin: true,
+        onUpdate: render,
       },
-      onUpdate: render,
     });
 
-    // Fade out UI content
-    const uiFade = gsap.to(".ui-content", {
-      opacity: 0,
-      ease: "power1.out",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "30% top",
-        scrub: true,
-      }
-    });
-
+    // Cleanup function
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      animation.kill();
-      uiFade.kill();
+      window.removeEventListener('resize', handleResize);
+      if (animation) animation.kill();
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
-  }, []);
-
+  }, [images]);
 
   return (
-    <div ref={containerRef} style={{ height: '500vh', position: 'relative' }}>
+    <div ref={containerRef} style={{ height: '100vh', position: 'relative' }}>
       <canvas
         ref={canvasRef}
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          display: 'block',
-          objectFit: 'cover'
+          // display: 'block',
         }}
       />
+
+      <div
+        className="ui-content"
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          width: '100%',
+          pointerEvents: 'auto'
+        }}
+      >
+        <Navbar />
+        <Hero />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
