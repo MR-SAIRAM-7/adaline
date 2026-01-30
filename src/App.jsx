@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,7 +17,7 @@ function App() {
   const imagesRef = useRef([]);
   const frameRef = useRef({ current: 0 });
 
-  // 1. Preload Images
+  // preload Images
   useEffect(() => {
     const loadImages = async () => {
       const promises = [];
@@ -23,15 +25,6 @@ function App() {
 
       for (let i = 1; i <= TOTAL_FRAMES; i++) {
         const img = new Image();
-        // Correct zero-padding: '3001' seems to be the suffix pattern from the file list?
-        // Check previous observation: 
-        // ...3001.jpg -> i=1. 3000 + 1?
-        // ...3100.jpg -> i=100. 3000 + 100?
-        // Yes, it acts like an offset of 3000? 
-        // Wait, the file list is `graded4K100gm5010803` + `001`.
-        // `graded4K100gm5010803` + `001` -> `...3001`.
-        // `graded4K100gm5010803` + `100` -> `...3100`.
-        // So it is PREFIX + padStart(3, '0').
         const paddedIndex = String(i).padStart(3, "0");
         const src = `/sequence/${PREFIX}${paddedIndex}.jpg`;
 
@@ -59,7 +52,7 @@ function App() {
     loadImages();
   }, []);
 
-  // 2. Setup ScrollTrigger and Canvas Rendering
+  //  Setup ScrollTrigger and Canvas Rendering
   useEffect(() => {
     if (isLoading) return;
     if (!canvasRef.current || !containerRef.current) return;
@@ -72,7 +65,7 @@ function App() {
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      render(); // Re-render on resize
+      render();
     };
 
     const render = () => {
@@ -80,7 +73,6 @@ function App() {
       const img = images[frameIndex];
 
       if (img && img.complete && img.naturalWidth > 0) {
-        // Draw Image - Object Fit: Cover Logic
         const w = canvas.width;
         const h = canvas.height;
         const imgW = img.width;
@@ -95,7 +87,6 @@ function App() {
       }
     };
 
-    // Initial Resize
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
@@ -108,14 +99,27 @@ function App() {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.5, // slightly smooth scrubbing
+        scrub: 0.5,
       },
       onUpdate: render,
+    });
+
+    // Fade out UI content
+    const uiFade = gsap.to(".ui-content", {
+      opacity: 0,
+      ease: "power1.out",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "30% top",
+        scrub: true,
+      }
     });
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       animation.kill();
+      uiFade.kill();
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, [isLoading]);
@@ -123,8 +127,7 @@ function App() {
   if (isLoading) {
     const progress = Math.round((loadedCount / TOTAL_FRAMES) * 100);
     return (
-      <>
-      </>
+      <></>
     );
   }
 
@@ -143,6 +146,18 @@ function App() {
         }}
       />
 
+      <div className="ui-content fixed top-0 left-0 w-full h-full z-10 pointer-events-none">
+        <div className="w-full h-full pointer-events-auto">
+          <Navbar />
+          <div className="flex flex-col h-full pointer-events-none">
+            {/* Hero should generally allow text selection but let's prevent blocks 
+                     if it fades out. Content can be interactive if needed. 
+                     For now, let's make it interactive until it fades.
+                 */}
+            <Hero />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
