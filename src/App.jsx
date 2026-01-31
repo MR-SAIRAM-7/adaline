@@ -17,10 +17,9 @@ const App = () => {
   const scrollVideoRef = useRef(null);
 
   const [images, setImages] = useState([]);
-
-
+  const [isScrollVideoVisible, setIsScrollVideoVisible] = useState(false);
   const totalFrames = 281;
-  const scrollDistance = 5000; // Total scroll distance for the animation
+  const scrollDistance = 5000; 
 
 
   useEffect(() => {
@@ -156,30 +155,32 @@ const App = () => {
     const video = scrollVideoRef.current;
     if (!videoContainer || !video) return;
 
-    
+
     gsap.set(videoContainer, {
       xPercent: -50,
       yPercent: -50,
-      scale: 3, 
+      scale: 3,
       opacity: 0,
       transformOrigin: 'center center',
     });
 
     // Video entrance animation - shrinks from all sides to center
     const videoAnimation = gsap.to(videoContainer, {
-      scale: 1, 
+      scale: 1,
       opacity: 1,
-      ease: 'none', 
+      ease: 'none',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: `top+=${scrollDistance * 0.9} top`, 
-        end: `+=${scrollDistance * 0.1}`, 
-        scrub: 0.5, 
+        start: `top+=${scrollDistance * 0.9} top`,
+        end: `+=${scrollDistance * 0.1}`,
+        scrub: 0.5,
         onEnter: () => {
+          setIsScrollVideoVisible(true);
           video.play().catch(() => {
           });
         },
         onLeaveBack: () => {
+          setIsScrollVideoVisible(false);
           video.pause();
           video.currentTime = 0;
         },
@@ -226,6 +227,7 @@ const App = () => {
       <div
         ref={scrollVideoContainerRef}
         className="scroll-video-container"
+        style={{ pointerEvents: isScrollVideoVisible ? 'auto' : 'none' }}
       >
         <video
           ref={scrollVideoRef}
@@ -234,6 +236,7 @@ const App = () => {
           muted
           loop
           controls
+          style={{ pointerEvents: isScrollVideoVisible ? 'auto' : 'none' }}
         >
           <source src="/videos/video1.mp4" type="video/mp4" />
           Your browser does not support the video tag.

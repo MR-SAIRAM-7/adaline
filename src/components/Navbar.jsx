@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import ProductsDropdown from './ProductsDropdown';
 import VideoModal from './VideoModal';
 
@@ -6,6 +6,36 @@ export default function Navbar() {
     const [productsOpen, setProductsOpen] = useState(false);
     const [videoModalOpen, setVideoModalOpen] = useState(false);
     const watchDemoButtonRef = useRef(null);
+    const closeTimeoutRef = useRef(null);
+
+    // Clear any pending close timeout
+    const clearCloseTimeout = useCallback(() => {
+        if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+            closeTimeoutRef.current = null;
+        }
+    }, []);
+
+    // Open dropdown immediately
+    const handleMouseEnter = useCallback(() => {
+        clearCloseTimeout();
+        setProductsOpen(true);
+    }, [clearCloseTimeout]);
+
+    // Close dropdown with delay to allow mouse to move to dropdown
+    const handleMouseLeave = useCallback(() => {
+        clearCloseTimeout();
+        closeTimeoutRef.current = setTimeout(() => {
+            setProductsOpen(false);
+        }, 150); 
+    }, [clearCloseTimeout]);
+
+    // Toggle for click/touch support
+    const handleProductsClick = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setProductsOpen(prev => !prev);
+    }, []);
 
     const handleWatchDemoClick = () => {
         setVideoModalOpen(true);
@@ -19,16 +49,18 @@ export default function Navbar() {
         <>
             <div
                 className="relative"
-                onMouseLeave={() => setProductsOpen(false)}
+                onMouseLeave={handleMouseLeave}
             >
                 <nav className="w-full px-6 py-4 flex items-center justify-between relative z-20">
                     {/* Left - Navigation Links */}
                     <div className="flex items-center gap-8">
                         <div
                             className="relative"
-                            onMouseEnter={() => setProductsOpen(true)}
+                            onMouseEnter={handleMouseEnter}
                         >
-                            <button className="flex items-center gap-1 text-xs font-medium tracking-widest text-gray-800 hover:text-gray-600 transition-colors">
+                            <button
+                                onClick={handleProductsClick}
+                                className="flex items-center gap-1 text-xs font-medium tracking-widest text-gray-800 hover:text-gray-600 transition-colors">
                                 PRODUCTS
                                 <svg
                                     className={`w-3 h-3 transition-transform ${productsOpen ? 'rotate-180' : ''}`}
@@ -75,7 +107,7 @@ export default function Navbar() {
                 {productsOpen && (
                     <div
                         className="absolute top-full left-0 w-full z-10"
-                        onMouseEnter={() => setProductsOpen(true)}
+                        onMouseEnter={handleMouseEnter}
                     >
                         <ProductsDropdown />
                     </div>
