@@ -301,9 +301,9 @@ export default function ProductsDropdown() {
 
     return (
         <div className="products-dropdown w-full bg-white border-b border-gray-200">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
                 {/* Icons Row */}
-                <div className="grid grid-cols-4 gap-8 pt-10 pb-6">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 pt-6 lg:pt-10 pb-4 lg:pb-6">
                     {products.map((product) => (
                         <a key={product.id} href={`/${product.id}`} className="col-span-1 block group">
                             <div className={`product-icon-wrapper flex items-center gap-3 min-h-[140px] w-full transition-colors duration-300 ${product.active ? 'text-gray-900' : 'text-[#c4c4c4]'}`}>
@@ -327,7 +327,7 @@ export default function ProductsDropdown() {
                 <div className="border-t border-gray-200" />
 
                 {/* Content Row */}
-                <div className="grid grid-cols-4 gap-8 py-8">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 py-6 lg:py-8">
                     {products.map((product) => (
                         <div key={product.id} className="col-span-1">
                             {/* Section Title */}

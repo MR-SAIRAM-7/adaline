@@ -28,15 +28,15 @@ const LogoThree = () => (
 
 
 export default function Hero() {
-    
+
     const baseLogos = [LogoSalesforce, LogoTwo, LogoThree];
 
-    
+
     const logos = [...baseLogos, ...baseLogos, ...baseLogos];
 
     return (
-        <section className="w-full flex flex-col items-center pt-12 pb-8 px-6">
-            
+        <section className="w-full flex flex-col items-center pt-8 md:pt-12 pb-6 md:pb-8 px-4 md:px-6">
+
             {/* Inline styles for the smooth animation */}
             <style>{`
                 @keyframes scroll {
@@ -46,39 +46,49 @@ export default function Hero() {
                 .animate-scroll {
                     animation: scroll 30s linear infinite;
                 }
+                @media (max-width: 640px) {
+                    .animate-scroll {
+                        animation: scroll 20s linear infinite;
+                    }
+                }
             `}</style>
 
             {/* Main Headline */}
-            <h1 className="hero-heading font-bold text-3xl md:text-4xl lg:text-[2.5rem] leading-tight text-center text-gray-900 max-w-3xl">
+            <h1 className="hero-heading font-bold text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] leading-tight text-center text-gray-900 max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-3xl">
                 The single platform to iterate,
-                <br />
+                <br className="hidden sm:block" />
+                <span className="sm:hidden"> </span>
                 evaluate, deploy, and monitor AI agents
             </h1>
 
-           
-            <div className="mt-12 flex flex-col items-center w-full max-w-4xl overflow-hidden">
-                <span className="text-xs tracking-[0.2em] text-gray-500 mb-6">
+
+            <div className="mt-8 md:mt-12 flex flex-col items-center w-full max-w-4xl overflow-hidden">
+                <span className="text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] text-gray-500 mb-4 md:mb-6">
                     TRUSTED BY
                 </span>
 
-               
-                <div 
-                  className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]"
+
+                <div
+                    className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_64px,_black_calc(100%-64px),transparent_100%)] md:[mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]"
                 >
                     {/* First Group */}
-                    <ul className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-scroll">
+                    <ul className="flex items-center justify-center md:justify-start [&_li]:mx-4 md:[&_li]:mx-8 [&_img]:max-w-none animate-scroll">
                         {logos.map((LogoComponent, i) => (
-                            <li key={i}>
-                                <LogoComponent />
+                            <li key={i} className="shrink-0">
+                                <div className="scale-75 sm:scale-90 md:scale-100 transform origin-center">
+                                    <LogoComponent />
+                                </div>
                             </li>
                         ))}
                     </ul>
-                    
+
                     {/* Second Group (Duplicate for Loop) */}
-                    <ul className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-scroll" aria-hidden="true">
+                    <ul className="flex items-center justify-center md:justify-start [&_li]:mx-4 md:[&_li]:mx-8 [&_img]:max-w-none animate-scroll" aria-hidden="true">
                         {logos.map((LogoComponent, i) => (
-                            <li key={`duplicate-${i}`}>
-                                <LogoComponent />
+                            <li key={`duplicate-${i}`} className="shrink-0">
+                                <div className="scale-75 sm:scale-90 md:scale-100 transform origin-center">
+                                    <LogoComponent />
+                                </div>
                             </li>
                         ))}
                     </ul>
