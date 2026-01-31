@@ -56,7 +56,6 @@ export default function VideoModal({ isOpen, onClose, buttonRef }) {
                 // Auto-play video after animation completes
                 if (videoRef.current) {
                     videoRef.current.play().catch(() => {
-                        // Handle autoplay restrictions silently
                     });
                 }
             });
@@ -91,7 +90,7 @@ export default function VideoModal({ isOpen, onClose, buttonRef }) {
         const offsetX = buttonCenterX - screenCenterX;
         const offsetY = buttonCenterY - screenCenterY;
 
-        // Reverse genie animation - shrink back to button with smooth animation
+        
         const tl = gsap.timeline({
             onComplete: onClose,
         });

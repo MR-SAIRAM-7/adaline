@@ -13,14 +13,16 @@ const App = () => {
   const uiContentRef = useRef(null);
   const navbarRef = useRef(null);
   const heroRef = useRef(null);
+  const scrollVideoContainerRef = useRef(null);
+  const scrollVideoRef = useRef(null);
 
-  
   const [images, setImages] = useState([]);
 
-  
-  const totalFrames = 281;
 
-  
+  const totalFrames = 281;
+  const scrollDistance = 5000; // Total scroll distance for the animation
+
+
   useEffect(() => {
     const loadedImages = [];
 
@@ -36,7 +38,7 @@ const App = () => {
 
 
   useEffect(() => {
-   
+
     if (images.length === 0) return;
 
     const canvas = canvasRef.current;
@@ -44,7 +46,7 @@ const App = () => {
 
     const context = canvas.getContext("2d");
 
-    
+
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -53,7 +55,7 @@ const App = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    
+
     const frameState = { frame: 0 };
 
     // Function to render the image corresponding to the current frame index
@@ -112,7 +114,7 @@ const App = () => {
     };
   }, [images]);
 
-  
+
   useEffect(() => {
     const navbar = navbarRef.current;
     const hero = heroRef.current;
@@ -148,6 +150,47 @@ const App = () => {
     };
   }, []);
 
+  // Scroll-triggered video animation
+  useEffect(() => {
+    const videoContainer = scrollVideoContainerRef.current;
+    const video = scrollVideoRef.current;
+    if (!videoContainer || !video) return;
+
+    
+    gsap.set(videoContainer, {
+      xPercent: -50,
+      yPercent: -50,
+      scale: 3, 
+      opacity: 0,
+      transformOrigin: 'center center',
+    });
+
+    // Video entrance animation - shrinks from all sides to center
+    const videoAnimation = gsap.to(videoContainer, {
+      scale: 1, 
+      opacity: 1,
+      ease: 'none', 
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: `top+=${scrollDistance * 0.9} top`, 
+        end: `+=${scrollDistance * 0.1}`, 
+        scrub: 0.5, 
+        onEnter: () => {
+          video.play().catch(() => {
+          });
+        },
+        onLeaveBack: () => {
+          video.pause();
+          video.currentTime = 0;
+        },
+      },
+    });
+
+    return () => {
+      if (videoAnimation) videoAnimation.kill();
+    };
+  }, []);
+
   return (
     <div ref={containerRef} style={{ height: '100vh', position: 'relative' }}>
       <canvas
@@ -158,7 +201,6 @@ const App = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          // display: 'block',
         }}
       />
 
@@ -178,6 +220,24 @@ const App = () => {
         <div ref={heroRef} className="hero-wrapper">
           <Hero />
         </div>
+      </div>
+
+      {/* Scroll-triggered Video Player */}
+      <div
+        ref={scrollVideoContainerRef}
+        className="scroll-video-container"
+      >
+        <video
+          ref={scrollVideoRef}
+          className="scroll-video-player"
+          playsInline
+          muted
+          loop
+          controls
+        >
+          <source src="/videos/video1.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   );
