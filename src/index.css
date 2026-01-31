@@ -90,18 +90,16 @@
   animation: marquee 20s linear infinite;
 }
 
-/* Products Dropdown Styles - Smooth Cloth Falling Effect */
-@keyframes clothFall {
+/* Products Dropdown Styles - Falls from top of screen */
+@keyframes dropdownSlideIn {
   0% {
     opacity: 0;
-    transform: scaleY(0);
-    transform-origin: top center;
+    transform: translateY(-100%);
   }
 
   100% {
     opacity: 1;
-    transform: scaleY(1);
-    transform-origin: top center;
+    transform: translateY(0);
   }
 }
 
@@ -115,14 +113,18 @@
   }
 }
 
-.products-dropdown {
-  animation: clothFall 0.4s ease-out forwards;
-  transform-origin: top center;
+/* Wrapper for fixed positioning - animation applied here */
+.products-dropdown-wrapper {
+  animation: dropdownSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity;
 }
 
+.products-dropdown {
+  will-change: opacity;
+}
+
 .products-dropdown>div {
-  animation: contentReveal 0.3s ease-out 0.1s forwards;
+  animation: contentReveal 0.3s ease-out 0.15s forwards;
   opacity: 0;
 }
 
