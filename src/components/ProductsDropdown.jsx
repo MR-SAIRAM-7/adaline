@@ -300,8 +300,20 @@ export default function ProductsDropdown() {
     };
 
     return (
+
         <div className="products-dropdown w-full bg-white border-b border-gray-200">
+
+            {/* Top Double Dashed Line Separator */}
+            <div className="w-full flex flex-col gap-[2px]">
+                <div className="w-full border-t border-dashed" style={{ borderColor: 'rgba(187, 247, 208, 0.7)' }}></div>
+                <div className="w-full border-t border-dashed" style={{ borderColor: 'rgba(187, 247, 208, 0.7)' }}></div>
+            </div>
             <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+                <div className="w-full flex flex-col gap-[2px] py-1">
+                    <div className="w-full border-t border-dashed" style={{ borderColor: 'rgba(187, 247, 208, 0.7)' }}></div>
+                    <div className="w-full border-t border-dashed" style={{ borderColor: 'rgba(187, 247, 208, 0.7)' }}></div>
+                    <div className="w-full border-t border-dashed" style={{ borderColor: 'rgba(187, 247, 208, 0.7)' }}></div>
+                </div>
                 {/* Icons Row */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 pt-6 lg:pt-10 pb-4 lg:pb-6">
                     {products.map((product) => (
@@ -323,8 +335,11 @@ export default function ProductsDropdown() {
                     ))}
                 </div>
 
-                {/* Divider */}
-                <div className="border-t border-gray-200" />
+                {/* Double Dashed Line Separator */}
+                <div className="w-full flex flex-col gap-[2px] py-1">
+                    <div className="w-full border-t border-dashed" style={{ borderColor: 'rgba(187, 247, 208, 0.7)' }}></div>
+                    <div className="w-full border-t border-dashed" style={{ borderColor: 'rgba(187, 247, 208, 0.7)' }}></div>
+                </div>
 
                 {/* Content Row */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 py-6 lg:py-8">

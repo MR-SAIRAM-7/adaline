@@ -61,7 +61,7 @@ export default function Navbar() {
                 className="relative"
                 onMouseLeave={handleMouseLeave}
             >
-                <nav className="w-full px-4 md:px-6 py-4 flex items-center justify-between relative z-50">
+                <nav className={`w-full px-4 md:px-6 py-4 flex items-center justify-between relative z-50 transition-colors duration-300 ${productsOpen ? 'bg-white' : ''}`}>
                     {/* Left - Navigation Links (Desktop only) */}
                     <div className="hidden md:flex items-center gap-8">
                         <div
@@ -133,7 +133,7 @@ export default function Navbar() {
                         </button>
                     </div>
                 </nav>
-               
+
                 {productsOpen && (
                     <div
                         className="fixed top-0 left-0 w-full z-40 hidden md:block products-dropdown-wrapper pt-16"
