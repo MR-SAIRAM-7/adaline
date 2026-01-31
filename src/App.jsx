@@ -125,7 +125,7 @@ const App = () => {
       ease: "power2.inOut",
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top top",
+        start: "top+=100 top",
         end: "+=1000",
         scrub: 1,
       },
@@ -137,7 +137,7 @@ const App = () => {
       ease: "power2.out",
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top+=500 top",
+        start: "top+=700 top",
         end: "+=600",
         scrub: 0.8,
       },
