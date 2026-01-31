@@ -63,7 +63,7 @@ export default function Hero() {
 
 
             <div className="mt-8 md:mt-12 flex flex-col items-center w-full max-w-4xl overflow-hidden">
-                <span className="text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] text-gray-500 mb-4 md:mb-6">
+                <span className="text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] font-bold  text-gray-500 mb-4 md:mb-6">
                     TRUSTED BY
                 </span>
 
