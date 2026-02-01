@@ -373,6 +373,35 @@
   background-color: rgba(0, 0, 0, 0.02);
 }
 
+/* Mobile menu icon continuous slow rotation */
+.mobile-icon-rotate {
+  animation: mobileIconSpin 8s linear infinite;
+}
+
+.mobile-icon-rotate-reverse {
+  animation: mobileIconSpinReverse 10s linear infinite;
+}
+
+@keyframes mobileIconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mobileIconSpinReverse {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
 
 @media (max-width: 640px) {
   .hero-heading {

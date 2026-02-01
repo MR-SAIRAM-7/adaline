@@ -12,7 +12,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
             label: 'Iterate',
             description: 'Sketch, test and refine',
             icon: (
-                <svg viewBox="0 0 64 64" className="w-10 h-10" strokeWidth="1" fill="none" stroke="currentColor">
+                <svg viewBox="0 0 64 64" className="w-10 h-10 mobile-icon-rotate" strokeWidth="1" fill="none" stroke="currentColor">
                     <circle cx="32" cy="32" r="20" vectorEffect="non-scaling-stroke" />
                 </svg>
             ),
@@ -22,7 +22,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
             label: 'Evaluate',
             description: 'Reflect and measure',
             icon: (
-                <svg viewBox="0 0 64 64" className="w-10 h-10" strokeWidth="1" fill="none" stroke="currentColor">
+                <svg viewBox="0 0 64 64" className="w-10 h-10 mobile-icon-rotate-reverse" strokeWidth="1" fill="none" stroke="currentColor">
                     <circle cx="32" cy="32" r="20" strokeDasharray="5 3" vectorEffect="non-scaling-stroke" />
                 </svg>
             ),
@@ -32,7 +32,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
             label: 'Deploy',
             description: 'From draft to live',
             icon: (
-                <svg viewBox="0 0 64 64" className="w-10 h-10" strokeWidth="1" fill="none" stroke="currentColor">
+                <svg viewBox="0 0 64 64" className="w-10 h-10 mobile-icon-rotate" strokeWidth="1" fill="none" stroke="currentColor">
                     <path d="M30.803 8.03c-7.956.39-14.893 4.654-18.965 10.946L19.53 24.8l-8.893-3.75A23.9 23.9 0 0 0 8 32c0 3.945.952 7.667 2.638 10.95l8.892-3.75-7.691 5.825c4.072 6.291 11.01 10.555 18.964 10.946L32 46.4l1.198 9.57c7.954-.392 14.89-4.656 18.963-10.947l-7.69-5.823 8.89 3.749A23.9 23.9 0 0 0 56 32c0-3.944-.951-7.666-2.637-10.948L44.472 24.8l7.69-5.824C48.092 12.685 41.155 8.42 33.2 8.029l-1.198 9.572z" vectorEffect="non-scaling-stroke" />
                 </svg>
             ),
@@ -42,7 +42,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
             label: 'Monitor',
             description: 'Insights in real time',
             icon: (
-                <svg viewBox="0 0 64 64" className="w-10 h-10" strokeWidth="1" fill="none" stroke="currentColor">
+                <svg viewBox="0 0 64 64" className="w-10 h-10 mobile-icon-rotate-reverse" strokeWidth="1" fill="none" stroke="currentColor">
                     <circle cx="32" cy="32" r="20" vectorEffect="non-scaling-stroke" />
                     <circle cx="32" cy="32" r="24" strokeDasharray="5 3" vectorEffect="non-scaling-stroke" />
                 </svg>
