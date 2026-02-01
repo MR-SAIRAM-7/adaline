@@ -356,12 +356,17 @@
   touch-action: none;
 }
 
-/* Mobile menu panel - dropdown from top */
+/* Mobile menu panel - unfolds from top */
 .mobile-menu-panel {
-  will-change: transform;
+  will-change: clip-path, transform;
   -webkit-overflow-scrolling: touch;
   transform-origin: center top;
   border-radius: 0 0 16px 16px;
+}
+
+/* Mobile menu content sections for staggered animation */
+.mobile-menu-section {
+  will-change: opacity, transform;
 }
 
 /* Mobile product items */

@@ -12,9 +12,14 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
             label: 'Iterate',
             description: 'Sketch, test and refine',
             icon: (
-                <svg viewBox="0 0 64 64" className="w-10 h-10 mobile-icon-rotate" strokeWidth="1" fill="none" stroke="currentColor">
-                    <circle cx="32" cy="32" r="20" vectorEffect="non-scaling-stroke" />
-                </svg>
+                <div className="relative w-10 h-10 mobile-icon-rotate-reverse">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" className="absolute inset-0 w-full h-full" strokeWidth="1" fill="none" stroke="currentColor">
+                        <path d="m32 8 18.764 9.036 4.634 20.304-12.985 16.283H21.587L8.602 37.341l4.634-20.305z" vectorEffect="non-scaling-stroke" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" className="absolute inset-0 w-full h-full" strokeWidth="1" fill="none" stroke="currentColor">
+                        <path d="m32 8 15.427 5.615 8.208 14.217L52.785 44 40.209 54.553H23.79L11.215 44l-2.85-16.168 8.208-14.217z" vectorEffect="non-scaling-stroke" />
+                    </svg>
+                </div>
             ),
         },
         {
@@ -56,22 +61,43 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
         const overlay = overlayRef.current;
         const panel = panelRef.current;
 
-        // Initial state - dropdown from top
-        gsap.set(overlay, { opacity: 0 });
-        gsap.set(panel, { y: '-100%' });
+        // Get staggered content elements
+        const contentSections = panel.querySelectorAll('.mobile-menu-section');
 
-        // Animate in - slide down from top 
+        // Initial state - panel clipped from bottom (hidden), content invisible
+        gsap.set(overlay, { opacity: 0 });
+        gsap.set(panel, {
+            clipPath: 'inset(0 0 100% 0)',
+            y: 0
+        });
+        gsap.set(contentSections, {
+            opacity: 0,
+            y: -20
+        });
+
+        // Animate in - unfold from top with staggered content
         const tl = gsap.timeline();
+
+        // Fade in overlay
         tl.to(overlay, {
             opacity: 1,
-            duration: 0.3,
+            duration: 0.25,
             ease: 'power2.out',
         })
+            // Unfold panel from top to bottom using clipPath
             .to(panel, {
-                y: '0%',
+                clipPath: 'inset(0 0 0% 0)',
                 duration: 0.5,
-                ease: 'expo.out',
-            }, '-=0.2');
+                ease: 'power3.out',
+            }, '-=0.15')
+            // Stagger reveal content sections
+            .to(contentSections, {
+                opacity: 1,
+                y: 0,
+                duration: 0.35,
+                stagger: 0.08,
+                ease: 'power2.out',
+            }, '-=0.3');
 
         // Prevent body scroll
         document.body.style.overflow = 'hidden';
@@ -85,20 +111,31 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
     const handleClose = () => {
         const overlay = overlayRef.current;
         const panel = panelRef.current;
+        const contentSections = panel.querySelectorAll('.mobile-menu-section');
 
         const tl = gsap.timeline({
             onComplete: onClose,
         });
 
-        tl.to(panel, {
-            y: '-100%',
-            duration: 0.35,
+        // Fade out content sections in reverse stagger
+        tl.to([...contentSections].reverse(), {
+            opacity: 0,
+            y: -15,
+            duration: 0.2,
+            stagger: 0.04,
             ease: 'power2.in',
         })
+            // Fold panel back up from bottom to top
+            .to(panel, {
+                clipPath: 'inset(0 0 100% 0)',
+                duration: 0.35,
+                ease: 'power2.in',
+            }, '-=0.1')
+            // Fade out overlay
             .to(overlay, {
                 opacity: 0,
                 duration: 0.2,
-            }, '-=0.15');
+            }, '-=0.2');
     };
 
     if (!isOpen) return null;
@@ -118,7 +155,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
                 className="mobile-menu-panel absolute top-0 left-0 right-0 w-full bg-white shadow-xl overflow-y-auto max-h-[90vh]"
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200/50">
+                <div className="mobile-menu-section flex items-center justify-between px-5 py-4 border-b border-gray-200/50">
                     {/* Logo */}
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 84 15" className="text-gray-900 h-4">
                         <path d="M9.15.003.451 12.124v1.733h1.74l8.698-6.928V.003zM10.89 11.777H8.801v2.078h2.087z" />
@@ -144,7 +181,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
                 </div>
 
                 {/* Products Section */}
-                <div className="px-5 pt-6 pb-4">
+                <div className="mobile-menu-section px-5 pt-6 pb-4">
                     <div className="mb-1">
                         <h2 className="text-xl font-semibold text-gray-900">Products</h2>
                         <p className="text-sm text-gray-500 mt-0.5">Across your journey</p>
@@ -181,7 +218,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
                 </div>
 
                 {/* Other Links */}
-                <div className="px-5 py-4 space-y-4">
+                <div className="mobile-menu-section px-5 py-4 space-y-4">
                     <a
                         href="#pricing"
                         className="block text-xl font-semibold text-gray-900 hover:text-[#2D5016] transition-colors"
@@ -199,7 +236,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
                 </div>
 
                 {onWatchDemo && (
-                    <div className="px-5 py-6 mt-4 border-t border-gray-200/50">
+                    <div className="mobile-menu-section px-5 py-6 mt-4 border-t border-gray-200/50">
                         <button
                             onClick={() => {
                                 handleClose();
