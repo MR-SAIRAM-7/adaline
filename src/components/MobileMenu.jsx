@@ -64,7 +64,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
         // Get staggered content elements
         const contentSections = panel.querySelectorAll('.mobile-menu-section');
 
-        // Initial state - panel clipped from bottom (hidden), content invisible
+        
         gsap.set(overlay, { opacity: 0 });
         gsap.set(panel, {
             clipPath: 'inset(0 0 100% 0)',
@@ -75,7 +75,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
             y: -20
         });
 
-        // Animate in - unfold from top with staggered content
+        
         const tl = gsap.timeline();
 
         // Fade in overlay
@@ -84,13 +84,13 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
             duration: 0.25,
             ease: 'power2.out',
         })
-            // Unfold panel from top to bottom using clipPath
+            
             .to(panel, {
                 clipPath: 'inset(0 0 0% 0)',
                 duration: 0.5,
                 ease: 'power3.out',
             }, '-=0.15')
-            // Stagger reveal content sections
+            
             .to(contentSections, {
                 opacity: 1,
                 y: 0,
@@ -99,7 +99,7 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
                 ease: 'power2.out',
             }, '-=0.3');
 
-        // Prevent body scroll
+
         document.body.style.overflow = 'hidden';
 
         return () => {

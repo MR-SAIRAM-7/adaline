@@ -361,7 +361,6 @@
   will-change: clip-path, transform;
   -webkit-overflow-scrolling: touch;
   transform-origin: center top;
-  border-radius: 0 0 16px 16px;
 }
 
 /* Mobile menu content sections for staggered animation */
