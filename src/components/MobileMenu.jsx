@@ -56,11 +56,11 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
         const overlay = overlayRef.current;
         const panel = panelRef.current;
 
-        // Initial state
+        // Initial state - dropdown from top
         gsap.set(overlay, { opacity: 0 });
-        gsap.set(panel, { x: '100%' });
+        gsap.set(panel, { y: '-100%' });
 
-        // Animate in
+        // Animate in - slide down from top 
         const tl = gsap.timeline();
         tl.to(overlay, {
             opacity: 1,
@@ -68,9 +68,9 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
             ease: 'power2.out',
         })
             .to(panel, {
-                x: '0%',
-                duration: 0.4,
-                ease: 'power3.out',
+                y: '0%',
+                duration: 0.5,
+                ease: 'expo.out',
             }, '-=0.2');
 
         // Prevent body scroll
@@ -91,14 +91,14 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
         });
 
         tl.to(panel, {
-            x: '100%',
-            duration: 0.3,
-            ease: 'power3.in',
+            y: '-100%',
+            duration: 0.35,
+            ease: 'power2.in',
         })
             .to(overlay, {
                 opacity: 0,
                 duration: 0.2,
-            }, '-=0.1');
+            }, '-=0.15');
     };
 
     if (!isOpen) return null;
@@ -112,10 +112,10 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
                 onClick={handleClose}
             />
 
-            {/* Menu panel */}
+            {/* Menu panel - dropdown from top */}
             <div
                 ref={panelRef}
-                className="mobile-menu-panel absolute top-0 right-0 w-full h-full bg-[#f5f3ef] overflow-y-auto"
+                className="mobile-menu-panel absolute top-0 left-0 right-0 w-full bg-white shadow-xl overflow-y-auto max-h-[90vh]"
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200/50">
@@ -198,7 +198,6 @@ export default function MobileMenu({ isOpen, onClose, onWatchDemo }) {
                     </a>
                 </div>
 
-                {/* Watch Demo Button (optional) */}
                 {onWatchDemo && (
                     <div className="px-5 py-6 mt-4 border-t border-gray-200/50">
                         <button

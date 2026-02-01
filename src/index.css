@@ -356,10 +356,12 @@
   touch-action: none;
 }
 
-/* Mobile menu panel */
+/* Mobile menu panel - dropdown from top */
 .mobile-menu-panel {
   will-change: transform;
   -webkit-overflow-scrolling: touch;
+  transform-origin: center top;
+  border-radius: 0 0 16px 16px;
 }
 
 /* Mobile product items */
